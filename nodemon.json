@@ -1,0 +1,6 @@
+{
+  "watch": ["."],
+  "ext": "js",
+  "ignore": ["./chunk.js"],
+  "exec": "node ./browersify.js index.js && node ./chunk.js"
+}
