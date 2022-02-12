@@ -68,7 +68,7 @@ const getCode = (entry) => {
 };
 
 //主函数,传入文件路径，返回最终打包完成的代码块
-const browersify = (path) => {
+const browserify = (path) => {
   // 获取绝对路径
   const wholePath = resolve(path);
 
@@ -79,7 +79,7 @@ const browersify = (path) => {
   return getCode(wholePath);
 };
 
-// 执行命令行传入打包源文件 node ./browersify.js index.js，此时path即index.js
+// 执行命令行传入打包源文件 node ./browserify.js index.js，此时path即index.js
 const [path] = process.argv.splice(2);
 // 写目标文件;
-fs.writeFileSync("./chunk.js", browersify(path));
+fs.writeFileSync("./chunk.js", browserify(path));
