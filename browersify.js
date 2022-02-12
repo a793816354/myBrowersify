@@ -1,21 +1,7 @@
 const fs = require("fs");
 const { resolve } = require("path");
 
-var getGlobal = function () {
-  if (typeof self !== "undefined") {
-    return "self";
-  }
-  if (typeof window !== "undefined") {
-    return "window";
-  }
-  if (typeof global !== "undefined") {
-    return "global";
-  }
-  throw new Error("unable to locate global object");
-};
-var globals = getGlobal();
 const moduleFuncCache = {};
-
 const codeSplicing = (path) => {
   /** 调整代码块，使其执行到require时执行我们新定义的_require
    *  获取其引用文件中的require，同样转化为_require执行，如index引入module1，module1引入module2，此时应该递归将三个文件都执行一遍
