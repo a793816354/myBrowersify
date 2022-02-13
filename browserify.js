@@ -25,7 +25,7 @@ const codeSplicing = (path) => {
   moduleFuncCache[encodeURIComponent(path)] = encodeURIComponent(`
         const module = {exports:{}};
         let {exports} = module;
-        eval(\`${text}\`)
+        ${text}
         return module.exports
       `);
 };
