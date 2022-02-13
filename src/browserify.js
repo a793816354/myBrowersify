@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { resolve } = require("path");
+const { resolve, dirname } = require("path");
 
 const moduleFuncCache = [];
 let curIndex = 0;
@@ -9,7 +9,6 @@ const pathIndexMap = {};
 const codeSplicing = (path) => {
   // 获取绝对路径
   const wholePath = resolve(path);
-
   if (pathIndexMap[wholePath] !== undefined) return;
 
   const text = fs
@@ -17,8 +16,10 @@ const codeSplicing = (path) => {
     .trim()
     .replace(/require/g, "_require")
     .replace(/_require\(['\"](.*)['\"]\)/g, function (matched, $1) {
-      codeSplicing($1);
-      return `_require(${pathIndexMap[resolve($1)]})`;
+      const filePath = resolve(dirname(wholePath), $1);
+      codeSplicing(filePath);
+
+      return `_require(${pathIndexMap[resolve(filePath)]})`;
     })
     .replace(/;$/, "");
 
