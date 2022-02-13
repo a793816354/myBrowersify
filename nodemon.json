@@ -2,5 +2,5 @@
   "watch": ["."],
   "ext": "js",
   "ignore": ["./dist/"],
-  "exec": "node ./browserify.js index.js && node ./dist/chunk.js"
+  "exec": "node ./src/browserify.js ./test/index.js && node ./dist/chunk.js"
 }
