@@ -10,7 +10,7 @@ const codeSplicing = (path) => {
   const text = fs
     .readFileSync(path, "utf-8")
     .trim()
-    .replace("require", "_require")
+    .replace(/require/g, "_require")
     .replace(/_require\(['\"](.*)['\"]\)/g, function (matched, $1) {
       codeSplicing(resolve($1));
       return `_require("${encodeURIComponent(resolve($1))}")`;
