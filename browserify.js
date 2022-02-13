@@ -2,7 +2,7 @@ const fs = require("fs");
 const { resolve } = require("path");
 
 const moduleFuncCache = [];
-let curIndex = -1;
+let curIndex = 0;
 
 //记录path和数组对应资源数组位置
 const pathIndexMap = {};
@@ -15,14 +15,13 @@ const codeSplicing = (path) => {
   const text = fs
     .readFileSync(wholePath, "utf-8")
     .trim()
-    .replace("require", "_require")
+    .replace(/require/g, "_require")
     .replace(/_require\(['\"](.*)['\"]\)/g, function (matched, $1) {
       codeSplicing($1);
-      return `_require(${curIndex})`;
+      return `_require(${pathIndexMap[resolve($1)]})`;
     })
     .replace(/;$/, "");
 
-  pathIndexMap[wholePath] = curIndex++;
   moduleFuncCache.push(`
     function(){
       const module = {exports:{}};
@@ -31,6 +30,7 @@ const codeSplicing = (path) => {
       return module.exports
     }
   `);
+  pathIndexMap[wholePath] = curIndex++;
 };
 
 const getCode = () => {

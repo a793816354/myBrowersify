@@ -40,11 +40,13 @@ module.exports = {
       const module = {exports:{}};
       let {exports} = module;
       const { obj } = _require(1);
+const module2 = _require(0);
 
 obj.name = "jane";
 obj.age += 30;
 
-console.log(obj)
+console.log(obj);
+console.log(module2)
       return module.exports
     }
   ]
