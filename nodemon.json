@@ -1,6 +1,6 @@
 {
   "watch": ["."],
   "ext": "js",
-  "ignore": ["./chunk.js"],
-  "exec": "node ./browserify.js index.js && node ./chunk.js"
+  "ignore": ["./dist/"],
+  "exec": "node ./browserify.js index.js && node ./dist/chunk.js"
 }
