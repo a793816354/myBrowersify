@@ -1,5 +1,6 @@
 const fs = require("fs");
-const { resolve, dirname } = require("path");
+const { resolve } = require("path");
+const { useLoader } = require("./loader.js");
 
 const moduleFuncCache = [];
 let curIndex = 0;
@@ -11,24 +12,9 @@ const codeSplicing = (path) => {
   const wholePath = resolve(path);
   if (pathIndexMap[wholePath] !== undefined) return;
 
-  const text = fs
-    .readFileSync(wholePath, "utf-8")
-    .trim()
-    .replace(/require/g, "_require")
-    .replace(/_require\(['\"](.*)['\"]\)/g, function (matched, $1) {
-      const filePath = resolve(dirname(wholePath), $1);
-      codeSplicing(filePath);
-
-      return `_require(${pathIndexMap[resolve(filePath)]})`;
-    })
-    .replace(/;$/, "");
-
   moduleFuncCache.push(`
     function(){
-      const module = {exports:{}};
-      let {exports} = module;
-      ${text}
-      return module.exports
+      ${useLoader(wholePath, codeSplicing, pathIndexMap)}
     }
   `);
   pathIndexMap[wholePath] = curIndex++;
