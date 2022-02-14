@@ -34,16 +34,18 @@ const loaderMap = {
   css(path) {
     const cssCode = fs.readFileSync(path, "utf-8");
     return `
-        const style = document.createElement("style");
-        style.innerText = \`${cssCode}\`
-        document.head.appendChild(style)
+        try {
+          const style = document.createElement("style");
+          style.innerText = \`${cssCode}\`
+          document.head.appendChild(style)
+        } catch(e) {}
       `;
   },
   ts(path, codeSplicing, pathIndexMap) {
     const filePath = `./test/temp_${basename(path, ".ts")}.js`;
     try {
       execSync(`tsc ${path} --outFile ${filePath}`);
-    } catch (error) {}
+    } catch (error) { }
 
     const code = scriptFormat(
       path,

@@ -1,7 +1,15 @@
 const fs = require("fs");
 const { resolve } = require("path");
 const { useLoader } = require("./loader.js");
+const { registerPlugin, execHook } = require("./plugin")
 
+//注册插件
+registerPlugin()
+
+
+
+execHook('beforeRun')
+//开始初始化参数
 const moduleFuncCache = [];
 let curIndex = 0;
 
@@ -43,15 +51,23 @@ const getCode = () => {
 
 //主函数,传入文件路径，返回最终打包完成的代码块
 const browserify = (path) => {
+  execHook('run')
   // 为每个require的模块拼接代码，为其提供module实例，并返回module.exports
   codeSplicing(path);
 
   // 阻止代码，使其能解析代码cache对象，并依照引入顺序来执行代码块
-  return getCode();
+  execHook('beforeCompile')
+  const code = getCode();
+  execHook('compile')
+  return code
 };
 
 // 执行命令行传入打包源文件 node ./browserify.js index.js，此时path即index.js
 const [path] = process.argv.splice(2);
 // 写目标文件;
-fs.mkdirSync("./dist");
+execHook('make')
+try {
+  fs.mkdirSync("./dist");
+} catch (error) { }
 fs.writeFileSync("./dist/chunk.js", browserify(path));
+execHook('seal')
