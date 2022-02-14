@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "colors-console": "^1.0.3",
     "nodemon": "^2.0.15"
   }
 }
