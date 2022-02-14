@@ -67,7 +67,7 @@ const loaderMap = {
 const useLoader = function (path, codeSplicing, pathIndexMap) {
   const ext = extname(path).replace(/^\./, "");
   const loader = loaderMap[ext];
-  if (!loader) throw new Error("不支持 ${loader} 文件类型");
+  if (!loader) throw new Error(`不支持 ${loader} 文件类型`);
   return loader(path, codeSplicing, pathIndexMap);
 };
 
