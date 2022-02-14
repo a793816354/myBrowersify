@@ -52,5 +52,9 @@ const browserify = (path) => {
 
 // 执行命令行传入打包源文件 node ./browserify.js index.js，此时path即index.js
 const [path] = process.argv.splice(2);
+
+try {
+  fs.mkdirSync("./dist");
+} catch (error) { }
 // 写目标文件;
 fs.writeFileSync("./dist/chunk.js", browserify(path));
