@@ -6,8 +6,6 @@ const { registerPlugin, execHook } = require("./plugin")
 //注册插件
 registerPlugin()
 
-
-
 execHook('beforeRun')
 //开始初始化参数
 const moduleFuncCache = [];
