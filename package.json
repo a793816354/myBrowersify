@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "nodemon"
+    "serve": "node server.js",
+    "watch": "node fileWatcher.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chokidar": "^3.5.3",
     "colors-console": "^1.0.3",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "ws": "^8.5.0"
   }
 }
