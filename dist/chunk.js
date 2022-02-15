@@ -58,11 +58,12 @@ module.exports = {
       
         try {
           const style = document.createElement("style");
-          style.innerText = `p {
+          const css = document.createTextNode(`p {
   color: rgb(79, 114, 230);
 }
-`
-          document.head.appendChild(style)
+`);
+          style.appendChild(css);
+          document.head.appendChild(style);
         } catch(e) {}
       
     }

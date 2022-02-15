@@ -36,8 +36,9 @@ const loaderMap = {
     return `
         try {
           const style = document.createElement("style");
-          style.innerText = \`${cssCode}\`
-          document.head.appendChild(style)
+          const css = document.createTextNode(\`${cssCode}\`);
+          style.appendChild(css);
+          document.head.appendChild(style);
         } catch(e) {}
       `;
   },
