@@ -12,18 +12,16 @@
             const formatModuleFuncCache = [
     function(){
       
-        const module = {exports:{}};
-        let {exports} = module;
-        const obj = {
-  name: "obj",
-  age: 360,
-};
-
-module.exports = {
-  obj,
+        try {
+          const style = document.createElement("style");
+          const css = document.createTextNode(`p {
+  color: rgb(79, 114, 230);
 }
-        return module.exports
-    
+`);
+          style.appendChild(css);
+          document.head.appendChild(style);
+        } catch(e) {}
+      
     }
   ,
     function(){
@@ -60,7 +58,7 @@ module.exports = {
         try {
           const style = document.createElement("style");
           const css = document.createTextNode(`p {
-  color: rgb(79, 114, 230);
+  color: rgb(230, 13, 49);
 }
 `);
           style.appendChild(css);

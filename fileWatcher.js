@@ -4,7 +4,7 @@ const { execSync } = require("child_process");
 // One-liner for current directory
 const watcher = chokidar.watch('.', {
     persistent: true,
-    ignored: ['./dist/chunk.js', './test/temp *.js', '.git', '.history', 'node_modules'],
+    ignored: ['./dist/chunk.js', './test/temp *.js', '.git', '.history', 'node_modules', './src/moduleFuncCache.js'],
     ignoreInitial: false,
     followSymlinks: true,
     cwd: '.',
@@ -25,6 +25,7 @@ const watcher = chokidar.watch('.', {
 })
 
 watcher.on('change', path => {
+    console.log(`更改文件${path}`);
     execSync(`node ./src/browserify.js ./test/index.js ${path}`)
 })
     .on('unlink', path => {
