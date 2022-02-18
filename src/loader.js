@@ -1,16 +1,17 @@
-const { extname, resolve, dirname, basename } = require("path");
+const { extname, basename, join, dirname } = require("path");
 const { execSync } = require("child_process");
 const fs = require("fs");
+const { getFilePath } = require("../utils/index.js");
 
 const scriptFormat = (path, code, pathIndexMap, codeSplicing) => {
   return code
     .trim()
     .replace(/require/g, "_require")
     .replace(/_require\(['\"](.*)['\"]\)/g, function (matched, $1) {
-      const filePath = resolve(dirname(path), $1);
+      const filePath = /^\w+$/g.test($1) ? $1 : join(dirname(path), $1);
       if (codeSplicing) codeSplicing(filePath);
 
-      return `_require(${pathIndexMap[resolve(filePath)]})`;
+      return `_require(${pathIndexMap[getFilePath(filePath)]})`;
     })
     .replace(/;$/, "");
 };
@@ -50,12 +51,12 @@ const loaderMap = {
 
     const code = scriptFormat(
       path,
-      fs.readFileSync(resolve(filePath), "utf-8"),
+      fs.readFileSync(getFilePath(filePath), "utf-8"),
       pathIndexMap,
       codeSplicing
     );
 
-    fs.unlinkSync(resolve(filePath));
+    fs.unlinkSync(getFilePath(filePath));
     return `
         const module = {exports:{}};
         let {exports} = module;
