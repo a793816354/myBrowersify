@@ -5,12 +5,12 @@ require("../asserts/css/color.css");
 
 const moment = require("moment");
 
-const func = () => {
-  document.body.innerText = `now time: ${moment().format(
-    "YYYY-MM-DD HH:mm:ss"
-  )}`;
-};
-setInterval(func, 100);
+// const func = () => {
+//   document.body.innerText = `now time: ${moment().format(
+//     "YYYY-MM-DD HH:mm:ss"
+//   )}`;
+// };
+// setInterval(func, 100);
 
 obj.name = "jane";
 obj.age += 10;
