@@ -4,7 +4,7 @@ const { weather } = require("./module3.ts");
 require("../asserts/css/color.css");
 
 obj.name = "jane";
-obj.age += 10;
+obj.age += 30;
 
 console.log(obj);
 console.log(module2);
