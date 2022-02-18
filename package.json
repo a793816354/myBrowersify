@@ -6,13 +6,14 @@
   "scripts": {
     "serve": "node ./server/http.js",
     "watch": "node fileWatcher.js",
-    "build":"node ./src/browserify.js ./test/index.js"
+    "build": "node ./src/browserify.js ./test/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "chokidar": "^3.5.3",
     "colors-console": "^1.0.3",
+    "enhanced-resolve": "^5.9.0",
     "moment": "^2.29.1",
     "nodemon": "^2.0.15",
     "ws": "^8.5.0"
