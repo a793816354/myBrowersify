@@ -1,7 +1,7 @@
 const fs = require("fs");
-const { resolve } = require("path");
 const { useLoader } = require("./loader.js");
 const { registerPlugin, execHook } = require("./plugin");
+const { getFilePath, log } = require("../utils/index.js");
 
 //注册插件
 registerPlugin();
@@ -15,7 +15,8 @@ let curIndex = 0;
 let pathIndexMap = {};
 const codeSplicing = (path) => {
   // 获取绝对路径
-  const wholePath = resolve(path);
+  const wholePath = getFilePath(path);
+  log(wholePath);
   if (pathIndexMap[wholePath] !== undefined) return;
 
   moduleFuncCache.push(`
@@ -28,7 +29,7 @@ const codeSplicing = (path) => {
 
 const singleCodeSplicing = (path) => {
   // 获取绝对路径
-  const wholePath = resolve(path);
+  const wholePath = getFilePath(path);
 
   return `
     function(){
@@ -69,7 +70,7 @@ const browserify = (path, changeFilePath = "") => {
     moduleFuncCache = cache.moduleFuncCache;
   } catch (error) {}
 
-  const pathIndex = pathIndexMap[resolve(changeFilePath)];
+  const pathIndex = pathIndexMap[getFilePath(changeFilePath)];
   if (changeFilePath && pathIndex !== undefined && moduleFuncCache.length) {
     moduleFuncCache[pathIndex] = singleCodeSplicing(changeFilePath);
   } else {

@@ -40,13 +40,13 @@ const watcher = chokidar.watch(".", {
 
 watcher
   .on("change", (path) => {
-    console.log(`更改文件${path}`);
-    ws.send(JSON.stringify({ type: "refresh", data: path }));
     try {
       execSync(`node ./src/browserify.js ./test/index.js ${path}`);
     } catch (error) {
       console.log(err.message);
     }
+    console.log(`更改文件${path}`);
+    ws.send(JSON.stringify({ type: "refresh", data: path }));
   })
   .on("unlink", (path) => {
     execSync(`node ./src/browserify.js ./test/index.js`);
