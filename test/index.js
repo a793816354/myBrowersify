@@ -13,8 +13,8 @@ const moment = require("moment");
 // setInterval(func, 100);
 
 obj.name = "jane";
-obj.age += 10;
-// document.write(obj.age);
+obj.age += 100;
+document.write(obj.age);
 console.log(obj);
 console.log(module2);
 console.log(weather);

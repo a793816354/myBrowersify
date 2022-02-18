@@ -11,7 +11,7 @@ ws.on("open", function open() {
 const watcher = chokidar.watch(".", {
   persistent: true,
   ignored: [
-    "./dist/chunk.js",
+    "./dist/*.js",
     "./test/temp *.js",
     ".git",
     ".history",

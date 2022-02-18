@@ -1,6 +1,6 @@
 const obj = {
   name: "obj",
-  age: 20,
+  age: 30,
 };
 
 module.exports = {
