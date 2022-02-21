@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "node server.js",
-    "watch": "node fileWatcher.js"
+    "watch": "node ./src/browserify.js ./test/index.js && node fileWatcher.js"
   },
   "author": "",
   "license": "ISC",

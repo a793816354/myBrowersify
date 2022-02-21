@@ -1,9 +1,8 @@
-const {obj} = require("./module2.js");
+const { obj } = require("./module2.js");
 
-const weather:string = 'snow'
-obj.age+=10
+const weather: string = "snow";
+obj.age += 20;
 
 module.exports = {
-    weather
+  weather,
 };
-  

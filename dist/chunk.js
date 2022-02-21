@@ -12,16 +12,18 @@
             const formatModuleFuncCache = [
     function(){
       
-        try {
-          const style = document.createElement("style");
-          const css = document.createTextNode(`p {
-  color: rgb(79, 114, 230);
+        const module = {exports:{}};
+        let {exports} = module;
+        const obj = {
+  name: "obj",
+  age: 30,
+};
+
+module.exports = {
+  obj,
 }
-`);
-          style.appendChild(css);
-          document.head.appendChild(style);
-        } catch(e) {}
-      
+        return module.exports
+    
     }
   ,
     function(){
@@ -44,8 +46,8 @@ module.exports = {
         const module = {exports:{}};
         let {exports} = module;
         var obj = _require(0).obj;
-var weather = 'snow';
-obj.age += 10;
+var weather = "snow";
+obj.age += 20;
 module.exports = {
     weather: weather
 }
@@ -58,13 +60,75 @@ module.exports = {
         try {
           const style = document.createElement("style");
           const css = document.createTextNode(`p {
-  color: rgb(230, 13, 49);
+  color: rgb(79, 114, 230);
 }
 `);
           style.appendChild(css);
           document.head.appendChild(style);
         } catch(e) {}
       
+    }
+  ,
+    function(){
+      
+        const module = {exports:{}};
+        let {exports} = module;
+        const { obj } = _require(1);
+const module2 = _require(0);
+const { weather } = _require(2);
+_require(3);
+
+obj.name = "jane";
+obj.age += 10;
+
+document.write(obj.age)
+
+console.log(obj);
+console.log(module2);
+console.log(weather)
+        return module.exports
+    
+    }
+  ,
+    function(){
+      
+        const module = {exports:{}};
+        let {exports} = module;
+        const { obj } = _require(1);
+const module2 = _require(0);
+const { weather } = _require(2);
+_require(3);
+
+obj.name = "jane";
+obj.age += 10;
+
+
+console.log(obj);
+console.log(module2);
+console.log(weather)
+        return module.exports
+    
+    }
+  ,
+    function(){
+      
+        const module = {exports:{}};
+        let {exports} = module;
+        const { obj } = _require(1);
+const module2 = _require(0);
+const { weather } = _require(2);
+_require(3);
+
+obj.name = "jane";
+obj.age += 10;
+
+document.write(obj.name)
+
+console.log(obj);
+console.log(module2);
+console.log(weather)
+        return module.exports
+    
     }
   ,
     function(){
@@ -88,6 +152,6 @@ console.log(weather)
   ]
 
             //执行入口文件代码
-            formatModuleFuncCache[4]()
+            formatModuleFuncCache[7]()
         })()
     

@@ -24,10 +24,13 @@ const watcher = chokidar.watch('.', {
     atomic: true
 })
 
+
 watcher.on('change', path => {
     console.log(`更改文件${path}`);
+    //增量更改模块，需传入更改的文件的路径
     execSync(`node ./src/browserify.js ./test/index.js ${path}`)
 })
     .on('unlink', path => {
+        // 遇到删除文件操作则重新打包一遍，及时发现错误
         execSync(`node ./src/browserify.js ./test/index.js`)
     });

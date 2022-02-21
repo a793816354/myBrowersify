@@ -2,13 +2,13 @@ const { extname, resolve, dirname, basename } = require("path");
 const { execSync } = require("child_process");
 const fs = require("fs");
 
-const scriptFormat = (path, code, codeSplicing, pathIndexMap) => {
+const scriptFormat = (path, code, pathIndexMap, codeSplicing) => {
   return code
     .trim()
     .replace(/require/g, "_require")
     .replace(/_require\(['\"](.*)['\"]\)/g, function (matched, $1) {
       const filePath = resolve(dirname(path), $1);
-      codeSplicing(filePath);
+      if (codeSplicing) codeSplicing(filePath);
 
       return `_require(${pathIndexMap[resolve(filePath)]})`;
     })
@@ -16,12 +16,12 @@ const scriptFormat = (path, code, codeSplicing, pathIndexMap) => {
 };
 
 const loaderMap = {
-  js(path, codeSplicing, pathIndexMap) {
+  js(path, pathIndexMap, codeSplicing) {
     const code = scriptFormat(
       path,
       fs.readFileSync(path, "utf-8"),
+      pathIndexMap,
       codeSplicing,
-      pathIndexMap
     );
 
     return `
@@ -42,7 +42,7 @@ const loaderMap = {
         } catch(e) {}
       `;
   },
-  ts(path, codeSplicing, pathIndexMap) {
+  ts(path, pathIndexMap, codeSplicing) {
     const filePath = `./test/temp_${basename(path, ".ts")}.js`;
     try {
       execSync(`tsc ${path} --outFile ${filePath}`);
@@ -51,8 +51,8 @@ const loaderMap = {
     const code = scriptFormat(
       path,
       fs.readFileSync(resolve(filePath), "utf-8"),
+      pathIndexMap,
       codeSplicing,
-      pathIndexMap
     );
 
     fs.unlinkSync(resolve(filePath));
@@ -65,11 +65,11 @@ const loaderMap = {
   },
 };
 
-const useLoader = function (path, codeSplicing, pathIndexMap) {
+const useLoader = function (path, pathIndexMap, codeSplicing) {
   const ext = extname(path).replace(/^\./, "");
   const loader = loaderMap[ext];
   if (!loader) throw new Error(`不支持 ${loader} 文件类型`);
-  return loader(path, codeSplicing, pathIndexMap);
+  return loader(path, pathIndexMap, codeSplicing);
 };
 
 module.exports = {

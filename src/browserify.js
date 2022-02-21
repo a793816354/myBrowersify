@@ -20,10 +20,21 @@ const codeSplicing = (path, force = false) => {
 
   moduleFuncCache.push(`
     function(){
-      ${useLoader(wholePath, codeSplicing, pathIndexMap)}
+      ${useLoader(wholePath, pathIndexMap, codeSplicing)}
     }
   `);
   pathIndexMap[wholePath] = curIndex++;
+};
+
+const singleCodeSplicing = (path, pathIndex) => {
+  // 获取绝对路径
+  const wholePath = resolve(path);
+
+  moduleFuncCache.push(`
+    function(){
+      ${useLoader(wholePath, pathIndexMap)}
+    }
+  `);
 };
 
 const getCode = () => {
@@ -52,20 +63,13 @@ const browserify = (path, changeFilePath = '') => {
   // 读取moduleFuncCache缓存
   try {
     const cache = JSON.parse(fs.readFileSync("./src/moduleFuncCache.js", 'utf-8'))
-    Object.entries(cache.pathIndexMap).forEach(([key, value]) => { pathIndexMap[key] = value })
-    cache.moduleFuncCache.forEach((item, index) => moduleFuncCache[index] = item)
+    pathIndexMap = cache.pathIndexMap
+    moduleFuncCache = cache.moduleFuncCache
   } catch (error) { }
 
   const pathIndex = pathIndexMap[resolve(changeFilePath)]
   if (changeFilePath && pathIndex !== undefined && moduleFuncCache.length) {
-    console.log(123);
-    const temp = moduleFuncCache.slice()
-    moduleFuncCache.length = 0
-    codeSplicing(changeFilePath, true);
-    const [newModule] = moduleFuncCache
-
-    temp.forEach((item, index) => moduleFuncCache[index] = item)
-    moduleFuncCache[pathIndex] = newModule
+    singleCodeSplicing(changeFilePath, pathIndex);
   } else {
     console.log(456);
     // 为每个require的模块拼接代码，为其提供module实例，并返回module.exports
